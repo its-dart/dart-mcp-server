@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import "dotenv/config";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -16,72 +17,29 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import axios from "axios";
 import { z } from "zod";
-import dotenv from "dotenv";
 import { readFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-
-dotenv.config();
+import {
+  ConfigService,
+  DocCreate,
+  DocService,
+  DocUpdate,
+  TaskCreate,
+  TaskService,
+  TaskUpdate,
+} from "dart-tools";
 
 const token = process.env.DART_TOKEN;
 if (!token) {
   console.error("DART_TOKEN environment variable is required");
   process.exit(1);
 }
-const hostBase = process.env.DART_HOST || "https://app.itsdart.com";
-const host = `${hostBase}/api/v0/public`;
-
-const headers = {
-  Authorization: `Bearer ${token}`,
-};
 
 const filename = fileURLToPath(import.meta.url);
 const packageJson = JSON.parse(
   readFileSync(join(dirname(filename), "..", "package.json"), "utf-8"),
 );
-
-// Task schemas
-const AssigneeSchema = z.object({
-  name: z.string(),
-  email: z.string(),
-});
-
-const TaskCreateSchema = z.object({
-  title: z.string(),
-  description: z.string().optional(),
-  dartboard: z.string().optional(),
-  status: z.string().optional(),
-  priority: z.string().nullable().optional(),
-  size: z.number().nullable().optional(),
-  startAt: z.string().nullable().optional(),
-  dueAt: z.string().nullable().optional(),
-  assignees: z.array(z.string()).optional(),
-  assignee: z.string().optional(),
-  tags: z.array(z.string()).optional(),
-  parentId: z.string().nullable().optional(),
-});
-
-const TaskUpdateSchema = TaskCreateSchema.extend({
-  id: z.string(),
-});
-
-const TaskSchema = TaskUpdateSchema.extend({
-  permalink: z.string(),
-  dartboard: z.string(),
-  status: z.string(),
-});
-
-const WrappedTaskCreateSchema = z.object({
-  item: TaskCreateSchema,
-});
-
-const WrappedTaskUpdateSchema = z.object({
-  item: TaskUpdateSchema,
-});
-
-const WrappedTaskSchema = z.object({
-  item: TaskSchema,
-});
 
 const TaskIdSchema = z.object({
   id: z
@@ -89,106 +47,10 @@ const TaskIdSchema = z.object({
     .regex(/^[a-zA-Z0-9]{12}$/, "Task ID must be 12 alphanumeric characters"),
 });
 
-// Doc schemas
-const DocCreateSchema = z.object({
-  title: z.string(),
-  text: z.string().optional(),
-  folder: z.string().optional(),
-});
-
-const DocUpdateSchema = DocCreateSchema.extend({
-  id: z.string(),
-});
-
-const DocSchema = DocUpdateSchema.extend({
-  permalink: z.string(),
-  folder: z.string(),
-});
-
-const WrappedDocCreateSchema = z.object({
-  item: DocCreateSchema,
-});
-
-const WrappedDocUpdateSchema = z.object({
-  item: DocUpdateSchema,
-});
-
-const WrappedDocSchema = z.object({
-  item: DocSchema,
-});
-
 const DocIdSchema = z.object({
   id: z
     .string()
     .regex(/^[a-zA-Z0-9]{12}$/, "Doc ID must be 12 alphanumeric characters"),
-});
-
-// Request schemas
-const TaskListParamsSchema = z.object({
-  assignee: z.string().optional(),
-  assignee_duid: z.string().optional(),
-  dartboard: z.string().optional(),
-  dartboard_duid: z.string().optional(),
-  description: z.string().optional(),
-  due_at_before: z.string().optional(),
-  due_at_after: z.string().optional(),
-  duids: z.string().optional(),
-  in_trash: z.boolean().optional(),
-  is_draft: z.boolean().optional(),
-  kind: z.string().optional(),
-  limit: z.number().optional(),
-  offset: z.number().optional(),
-  priority: z.string().optional(),
-  size: z.number().optional(),
-  start_at_before: z.string().optional(),
-  start_at_after: z.string().optional(),
-  status: z.string().optional(),
-  status_duid: z.string().optional(),
-  subscriber_duid: z.string().optional(),
-  tag: z.string().optional(),
-  title: z.string().optional(),
-});
-
-type TaskListParams = z.infer<typeof TaskListParamsSchema>;
-
-const DocListParamsSchema = z.object({
-  folder: z.string().optional(),
-  folder_duid: z.string().optional(),
-  duids: z.string().optional(),
-  in_trash: z.boolean().optional(),
-  is_draft: z.boolean().optional(),
-  limit: z.number().optional(),
-  offset: z.number().optional(),
-  s: z.string().optional(),
-  text: z.string().optional(),
-  title: z.string().optional(),
-});
-
-type DocListParams = z.infer<typeof DocListParamsSchema>;
-// Response schemas
-const ConfigResponseSchema = z.object({
-  today: z.string(),
-  assignees: z.array(AssigneeSchema),
-  dartboards: z.array(z.string()),
-  folders: z.array(z.string()),
-  statuses: z.array(z.string()),
-  tags: z.array(z.string()),
-  priorities: z.array(z.string()),
-  sizes: z.array(z.number()),
-});
-
-const PaginationResponseSchema = z.object({
-  count: z.number(),
-  next: z.string().nullable(),
-  previous: z.string().nullable(),
-});
-
-const TaskListResponseSchema = PaginationResponseSchema.extend({
-  results: z.array(TaskSchema),
-});
-
-const DocListResponseSchema = PaginationResponseSchema.extend({
-  results: z.array(DocSchema),
 });
 
 // Server resources
@@ -692,32 +554,6 @@ const deleteDocTool: Tool = {
   },
 };
 
-// Client functions
-const listTasks = async (params?: TaskListParams) => {
-  const response = await axios.get(`${host}/tasks/list`, { headers, params });
-  return TaskListResponseSchema.parse(response.data);
-};
-
-const listDocs = async (params?: DocListParams) => {
-  const response = await axios.get(`${host}/docs/list`, { headers, params });
-  return DocListResponseSchema.parse(response.data);
-};
-
-const getConfig = async () => {
-  const response = await axios.get(`${host}/config`, { headers });
-  return ConfigResponseSchema.parse(response.data);
-};
-
-const getTask = async (id: string) => {
-  const response = await axios.get(`${host}/tasks/${id}`, { headers });
-  return WrappedTaskSchema.parse(response.data);
-};
-
-const getDoc = async (id: string) => {
-  const response = await axios.get(`${host}/docs/${id}`, { headers });
-  return WrappedDocSchema.parse(response.data);
-};
-
 // Server
 const server = new Server(
   {
@@ -819,17 +655,15 @@ server.setRequestHandler(ListResourceTemplatesRequestSchema, async () => ({
 }));
 
 server.setRequestHandler(ListResourcesRequestSchema, async () => {
-  const tasks = await listTasks();
+  const tasks = await TaskService.listTasks({});
   const taskResources = tasks.results.map((task) => ({
     uri: `dart-task:///${task.id}`,
     name: task.title,
-    description: task.description,
   }));
-  const docs = await listDocs();
+  const docs = await DocService.listDocs({});
   const docResources = docs.results.map((doc) => ({
     uri: `dart-doc:///${doc.id}`,
     name: doc.title,
-    description: doc.text,
   }));
   return { resources: [...taskResources, ...docResources] };
 });
@@ -841,7 +675,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const { protocol } = url;
 
   if (protocol === "dart-config") {
-    const config = await getConfig();
+    const config = await ConfigService.getConfig();
     return {
       contents: [
         {
@@ -854,7 +688,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   }
 
   if (protocol === "dart-task:") {
-    const task = await getTask(path);
+    const task = await TaskService.retrieveTask(path);
     return {
       contents: [
         {
@@ -867,7 +701,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   }
 
   if (protocol === "dart-doc:") {
-    const doc = await getDoc(path);
+    const doc = await DocService.retrieveDoc(path);
     return {
       contents: [
         {
@@ -906,101 +740,79 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
     switch (request.params.name) {
       case "get_config": {
-        const config = await getConfig();
+        const config = await ConfigService.getConfig();
         return {
           content: [{ type: "text", text: JSON.stringify(config, null, 2) }],
         };
       }
       case "list_tasks": {
-        const params = TaskListParamsSchema.parse(request.params.arguments);
-        const tasks = await listTasks(params);
+        const tasks = await TaskService.listTasks(request.params.arguments);
         return {
           content: [{ type: "text", text: JSON.stringify(tasks, null, 2) }],
         };
       }
       case "create_task": {
-        const taskData = TaskCreateSchema.parse(request.params.arguments);
-        const wrappedData = WrappedTaskCreateSchema.parse({ item: taskData });
-        const response = await axios.post(`${host}/tasks`, wrappedData, {
-          headers,
+        const task = await TaskService.createTask({
+          item: request.params.arguments as TaskCreate,
         });
-        const task = WrappedTaskSchema.parse(response.data);
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
       }
       case "get_task": {
         const { id } = TaskIdSchema.parse(request.params.arguments);
-        const task = await getTask(id);
+        const task = await TaskService.retrieveTask(id);
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
       }
       case "update_task": {
-        const taskData = TaskIdSchema.merge(TaskUpdateSchema).parse(
-          request.params.arguments,
-        );
-        const { id } = taskData;
-        const wrappedData = WrappedTaskUpdateSchema.parse({ item: taskData });
-        const response = await axios.put(`${host}/tasks/${id}`, wrappedData, {
-          headers,
+        const taskData = request.params.arguments as TaskUpdate;
+        const task = await TaskService.updateTask(taskData.id, {
+          item: taskData,
         });
-        const task = WrappedTaskSchema.parse(response.data);
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
       }
       case "delete_task": {
         const { id } = TaskIdSchema.parse(request.params.arguments);
-        const response = await axios.delete(`${host}/tasks/${id}`, { headers });
-        const task = WrappedTaskSchema.parse(response.data);
+        const task = await TaskService.deleteTask(id);
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
       }
       case "list_docs": {
-        const params = DocListParamsSchema.parse(request.params.arguments);
-        const docs = await listDocs(params);
+        const docs = await DocService.listDocs(request.params.arguments);
         return {
           content: [{ type: "text", text: JSON.stringify(docs, null, 2) }],
         };
       }
       case "create_doc": {
-        const docData = DocCreateSchema.parse(request.params.arguments);
-        const wrappedData = WrappedDocCreateSchema.parse({ item: docData });
-        const response = await axios.post(`${host}/docs`, wrappedData, {
-          headers,
+        const doc = await DocService.createDoc({
+          item: request.params.arguments as DocCreate,
         });
-        const doc = WrappedDocSchema.parse(response.data);
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
       }
       case "get_doc": {
         const { id } = DocIdSchema.parse(request.params.arguments);
-        const doc = await getDoc(id);
+        const doc = await DocService.retrieveDoc(id);
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
       }
       case "update_doc": {
-        const docData = DocIdSchema.merge(DocUpdateSchema).parse(
-          request.params.arguments,
-        );
-        const { id } = docData;
-        const wrappedData = WrappedDocUpdateSchema.parse({ item: docData });
-        const response = await axios.put(`${host}/docs/${id}`, wrappedData, {
-          headers,
-        });
-        const doc = WrappedDocSchema.parse(response.data);
+        const docData = request.params.arguments as DocUpdate;
+        const doc = await DocService.updateDoc(docData.id, { item: docData });
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
       }
       case "delete_doc": {
         const { id } = DocIdSchema.parse(request.params.arguments);
-        const response = await axios.delete(`${host}/docs/${id}`, { headers });
-        const doc = WrappedDocSchema.parse(response.data);
+        const doc = await DocService.deleteDoc(id);
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
@@ -1013,7 +825,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       throw new Error(`Invalid input: ${JSON.stringify(error.errors)}`);
     }
     if (axios.isAxiosError(error)) {
-      throw new Error(`API error: ${error.response?.status ?? 500} ${JSON.stringify(error.response?.data) || error.message || "(unknown error)"}`);
+      throw new Error(
+        `API error: ${error.response?.status ?? 500} ${JSON.stringify(error.response?.data) || error.message || "(unknown error)"}`,
+      );
     }
     throw error;
   }

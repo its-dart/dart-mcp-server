@@ -21,6 +21,7 @@
     "dist"
   ],
   "scripts": {
+    "start:mcp-inspector": "yarn run build && CLIENT_PORT=5174 npx @modelcontextprotocol/inspector node dist/index.js",
     "prepare": "npm run build",
     "build": "tsc && shx chmod +x dist/*.js",
     "prettier-check": "prettier --check .",
@@ -30,10 +31,12 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "~1.5",
     "axios": "~1.8",
+    "dart-tools": "~0.3.1",
     "dotenv": "~16.4",
     "zod": "~3.24"
   },
   "devDependencies": {
+    "@modelcontextprotocol/inspector": "0.7.0",
     "@types/node": "22.13.13",
     "prettier": "3.4.2",
     "release-it": "17.11.0",
