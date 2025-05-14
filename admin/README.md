@@ -34,3 +34,8 @@
 1. Commit and push all local changes to GitHub
 2. Run `npm login` if needed
 3. Run `yarn release` and follow the prompts (usually they are all a yes), confirming each step by pressing enter
+
+## Dependency upgrading
+
+1. Update node, replace the current version in `dockerfile` with the latest stable version [here](https://nodejs.org/en/download)
+1. Run `yarn req-up-all` and select everything to update all FE dependencies
