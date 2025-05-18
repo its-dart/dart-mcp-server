@@ -84,6 +84,16 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
 2. Open the config file by opening the Claude Desktop app, going into its Settings, opening the 'Developer' tab, and clicking the 'Edit Config' button
 3. Follow the 'Set up the MCP server' steps below
 
+#### Claude Code
+
+1. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started) as needed
+2. Copy your authentication token from [your Dart profile](https://app.itsdart.com/?settings=account)
+3. Add the Dart MCP server using the following command:
+
+   ```bash
+   claude mcp add-json dart '{"command":"npx","args":["-y","dart-mcp-server"],"env":{"DART_TOKEN":"dsa_..."}}'
+   ```
+
 #### Cursor
 
 1. [Install Cursor](https://www.cursor.com/downloads) as needed
