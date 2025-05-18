@@ -1,11 +1,11 @@
 {
   "name": "dart-mcp-server",
-  "version": "0.1.14",
+  "version": "0.1.13",
   "description": "The Dart MCP server",
   "license": "MIT",
   "author": "Dart (software@itsdart.com)",
   "engines": {
-    "node": ">=19.0.0"
+    "node": ">=20"
   },
   "homepage": "https://github.com/its-dart/dart-mcp-server",
   "repository": {
