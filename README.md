@@ -18,8 +18,11 @@
     - [Document management](#document-management)
 - [Setup](#setup)
   - [Find the MCP settings file for the client](#find-the-mcp-settings-file-for-the-client)
-    - [Claude](#claude)
+    - [Claude Desktop](#claude-desktop)
+    - [Claude Code](#claude-code)
+    - [Cursor](#cursor)
     - [Cline](#cline)
+    - [Windsurf](#windsurf)
     - [Any other client](#any-other-client)
   - [Set up the MCP server](#set-up-the-mcp-server)
   - [Variant: setup with Docker](#variant-setup-with-docker)
@@ -76,21 +79,43 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
 
 ### Find the MCP settings file for the client
 
-#### Claude
+#### Claude Desktop
 
 1. [Install Claude Desktop](https://claude.ai/download) as needed
-2. Open the `claude_desktop_config.json` file, which can be located by opening the Claude Desktop app, going into its Settings, opening the 'Developer' tab, and clicking the 'Edit Config' button
+2. Open the config file by opening the Claude Desktop app, going into its Settings, opening the 'Developer' tab, and clicking the 'Edit Config' button
+3. Follow the 'Set up the MCP server' steps below
+
+#### Claude Code
+
+1. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started) as needed
+2. Copy your authentication token from [your Dart profile](https://app.itsdart.com/?settings=account)
+3. Run the following command, being sure to replace `dsa...` with your actual Dart token
+
+   ```bash
+   claude mcp add-json dart '{"command":"npx","args":["-y","dart-mcp-server"],"env":{"DART_TOKEN":"dsa_..."}}'
+   ```
+
+#### Cursor
+
+1. [Install Cursor](https://www.cursor.com/downloads) as needed
+2. Open the config file by opening Cursor, going into 'Cursor Settings' (not the normal VSCode IDE settings), opening the 'MCP' tab, and clicking the 'Add new global MCP server' button
 3. Follow the 'Set up the MCP server' steps below
 
 #### Cline
 
 1. [Install Cline](https://cline.bot/) in your IDE as needed
-2. Install the MCP server by opening your IDE, opening the Cline sidebar, clicking the 'MCP Servers' icon button that is second from left at the top, opening the 'Installed' tab, and clicking the 'Configure MCP Servers' button
+2. Open the config file by opening your IDE, opening the Cline sidebar, clicking the 'MCP Servers' icon button that is second from left at the top, opening the 'Installed' tab, and clicking the 'Configure MCP Servers' button
+3. Follow the 'Set up the MCP server' steps below
+
+#### Windsurf
+
+1. [Install Windsurf](https://windsurf.com/download) as needed
+2. Open the config file by opening Windsurf, going into 'Windsurf Settings' (not the normal VSCode IDE settings), opening the 'Cascade' tab, and clicking the 'View raw config' button in the 'Model Context Protocol (MCP) Servers' section
 3. Follow the 'Set up the MCP server' steps below
 
 #### Any other client
 
-1. Find the MCP settings file, usually `[client]_mcp_settings.json`
+1. Find the MCP settings file, usually something like `[client]_mcp_config.json`
 2. Follow the 'Set up the MCP server' steps below
 
 ### Set up the MCP server
@@ -138,7 +163,7 @@ If the `npx` setup above does not work well, we also provide a Docker setup. Fol
 
 ## Help and Resources
 
-- [Homepage](https://www.itsdart.com/?nr=1)
+- [Homepage](https://itsdart.com/?nr=1)
 - [Web App](https://app.itsdart.com/)
 - [Help Center](https://help.itsdart.com/)
 - [Bugs and Features](https://app.itsdart.com/p/r/JFyPnhL9En61)
