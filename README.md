@@ -152,8 +152,11 @@ If the `npx` setup above does not work well, we also provide a Docker setup. Fol
    {
      "mcpServers": {
        "dart": {
-         "command": "docker",
-         "args": ["run", "-i", "--rm", "-e", "DART_TOKEN", "mcp/dart"],
+         "command": "bash",
+         "args": [
+           "-c",
+           "docker stop dart-mcp >/dev/null 2>&1 || true; docker rm -f dart-mcp >/dev/null 2>&1 || true; docker run -i --rm --name dart-mcp -e DART_TOKEN mcp/dart"
+          ],
          "env": {
            "DART_TOKEN": "dsa_..."
          }
