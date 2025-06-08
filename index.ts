@@ -19,6 +19,8 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import {
   ApiError,
+  CommentCreate,
+  CommentService,
   ConfigService,
   DocCreate,
   DocService,
@@ -417,6 +419,28 @@ const DELETE_TASK_TOOL: Tool = {
   },
 };
 
+const ADD_TASK_COMMENT_TOOL: Tool = {
+  name: "add_task_comment",
+  description:
+    "Add a comment to an existing task without modifying the task description. Comments support markdown formatting.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      taskId: {
+        type: "string",
+        description: "The 12-character alphanumeric ID of the task",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      text: {
+        type: "string",
+        description:
+          "The full content of the comment, which can include markdown formatting.",
+      },
+    },
+    required: ["taskId", "text"],
+  },
+};
+
 const LIST_DOCS_TOOL: Tool = {
   name: "list_docs",
   description:
@@ -714,6 +738,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     GET_TASK_TOOL,
     UPDATE_TASK_TOOL,
     DELETE_TASK_TOOL,
+    ADD_TASK_COMMENT_TOOL,
     LIST_DOCS_TOOL,
     CREATE_DOC_TOOL,
     GET_DOC_TOOL,
@@ -770,6 +795,17 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const task = await TaskService.deleteTask(id);
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
+        };
+      }
+      case "add_task_comment": {
+        const taskId = getIdValidated(request.params.arguments.taskId);
+        const text = request.params.arguments.text;
+        const commentData = { taskId, text } as CommentCreate;
+        const comment = await CommentService.createComment({
+          item: commentData,
+        });
+        return {
+          content: [{ type: "text", text: JSON.stringify(comment, null, 2) }],
         };
       }
       case "list_docs": {

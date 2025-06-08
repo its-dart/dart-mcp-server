@@ -62,6 +62,7 @@ The following tools are available
 - `get_task` - Retrieve an existing task by its ID
 - `update_task` - Update an existing task's properties
 - `delete_task` - Move a task to the trash (recoverable)
+- `add_task_comment` - Add a comment to an existing task
 
 #### Document management
 
@@ -151,8 +152,11 @@ If the `npx` setup above does not work well, we also provide a Docker setup. Fol
    {
      "mcpServers": {
        "dart": {
-         "command": "docker",
-         "args": ["run", "-i", "--rm", "-e", "DART_TOKEN", "mcp/dart"],
+         "command": "bash",
+         "args": [
+           "-c",
+           "docker rm -f dart-mcp >/dev/null 2>&1 || true; docker run -i --rm --name dart-mcp -e DART_TOKEN mcp/dart"
+          ],
          "env": {
            "DART_TOKEN": "dsa_..."
          }
