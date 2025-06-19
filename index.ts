@@ -54,6 +54,38 @@ const getIdValidated = (strMaybe: any): string => {
   return id;
 };
 
+const CUSTOM_PROPERTIES_SCHEMA = {
+  type: "object",
+  description:
+    "Custom properties to apply to the task. Use the property names from the config. Examples: { 'customCheckboxProperty': true, 'customTextProperty': 'Some text', 'customNumberProperty': 5, 'customSelectProperty': 'Option Name', 'customDatesProperty': '2025-05-10', 'customDatesPropertyWithRange': ['2025-05-01', '2025-05-30'], 'customMultiselectProperty': ['option1', 'option2'], 'customUserProperty': 'user@example.com', 'customMultipleUserProperty': ['user1@example.com', 'user2@example.com'] }",
+  additionalProperties: {
+    oneOf: [
+      { title: "CustomPropertyCheckbox", type: "boolean" },
+      {
+        title: "CustomPropertyDatesRange",
+        type: ["array", "null"],
+        items: { type: ["string", "null"] },
+      },
+      { title: "CustomPropertyDatesSingle", type: ["string", "null"] },
+      {
+        title: "CustomPropertyMultiselect",
+        type: "array",
+        items: { type: "string" },
+      },
+      { title: "CustomPropertyNumber", type: ["number", "null"] },
+      { title: "CustomPropertySelect", type: ["string", "null"] },
+      { title: "CustomPropertyStatus", type: "string" },
+      { title: "CustomPropertyText", type: "string" },
+      {
+        title: "CustomPropertyUserMultiple",
+        type: "array",
+        items: { type: "string" },
+      },
+      { title: "CustomPropertyUserSingle", type: ["string", "null"] },
+    ],
+  },
+};
+
 // Prompts
 const CREATE_TASK_PROMPT: Prompt = {
   name: "Create task",
@@ -171,7 +203,7 @@ const DOC_RESOURCE_TEMPLATE: ResourceTemplate = {
 const GET_CONFIG_TOOL: Tool = {
   name: "get_config",
   description:
-    "Get information about the user's space, including all of the possible values that can be provided to other endpoints. This includes available assignees, dartboards, folders, statuses, tags, priorities, and sizes.",
+    "Get information about the user's space, including all of the possible values that can be provided to other endpoints. This includes available assignees, dartboards, folders, statuses, tags, priorities, sizes, and all custom property definitions.",
   inputSchema: {
     type: "object",
     properties: {},
@@ -249,7 +281,7 @@ const LIST_TASKS_TOOL: Tool = {
 const CREATE_TASK_TOOL: Tool = {
   name: "create_task",
   description:
-    "Create a new task in Dart. You can specify title, description, status, priority, size, dates, dartboard, assignees, tags, and parent task.",
+    "Create a new task in Dart. You can specify title, description, status, priority, size, dates, dartboard, assignees, tags, parent task, and custom properties.",
   inputSchema: {
     type: "object",
     properties: {
@@ -308,6 +340,7 @@ const CREATE_TASK_TOOL: Tool = {
         type: "string",
         description: "The ID of the parent task",
       },
+      customProperties: CUSTOM_PROPERTIES_SCHEMA,
     },
     required: ["title"],
   },
@@ -316,7 +349,7 @@ const CREATE_TASK_TOOL: Tool = {
 const GET_TASK_TOOL: Tool = {
   name: "get_task",
   description:
-    "Retrieve an existing task by its ID. Returns the task's information including title, description, status, priority, dates, and more.",
+    "Retrieve an existing task by its ID. Returns the task's information including title, description, status, priority, dates, custom properties, and more.",
   inputSchema: {
     type: "object",
     properties: {
@@ -333,7 +366,7 @@ const GET_TASK_TOOL: Tool = {
 const UPDATE_TASK_TOOL: Tool = {
   name: "update_task",
   description:
-    "Update an existing task. You can modify any of its properties including title, description, status, priority, dates, assignees, and more.",
+    "Update an existing task. You can modify any of its properties including title, description, status, priority, dates, assignees, tags, and custom properties.",
   inputSchema: {
     type: "object",
     properties: {
@@ -397,6 +430,7 @@ const UPDATE_TASK_TOOL: Tool = {
         type: "string",
         description: "The ID of the parent task",
       },
+      customProperties: CUSTOM_PROPERTIES_SCHEMA,
     },
     required: ["id"],
   },
@@ -596,11 +630,13 @@ const TOOLS = [
   UPDATE_DOC_TOOL,
   DELETE_DOC_TOOL,
 ];
-const NO_ARGS_TOOL_NAMES = new Set(TOOLS.filter(
-  (tool) =>
-    !tool.inputSchema.properties ||
-    Object.keys(tool.inputSchema.properties).length === 0,
-).map((tool) => tool.name));
+const NO_ARGS_TOOL_NAMES = new Set(
+  TOOLS.filter(
+    (tool) =>
+      !tool.inputSchema.properties ||
+      Object.keys(tool.inputSchema.properties).length === 0,
+  ).map((tool) => tool.name),
+);
 
 // Server
 const server = new Server(
