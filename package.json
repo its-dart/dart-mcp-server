@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "start:mcp-inspector": "yarn run build && CLIENT_PORT=9001 SERVER_PORT=9000 npx @modelcontextprotocol/inspector node dist/index.js",
+    "start:mcp-inspector": "yarn run build && DANGEROUSLY_OMIT_AUTH=true npx @modelcontextprotocol/inspector node dist/index.js",
     "prepare": "npm run build",
     "build": "tsc && shx chmod +x dist/*.js",
     "prettier-check": "prettier --check .",
@@ -35,7 +35,7 @@
     "dotenv": "~16.5"
   },
   "devDependencies": {
-    "@modelcontextprotocol/inspector": "0.12.0",
+    "@modelcontextprotocol/inspector": "0.14.3",
     "@types/node": "22.15.18",
     "prettier": "3.5.3",
     "release-it": "19.0.2",
