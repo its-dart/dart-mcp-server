@@ -101,13 +101,42 @@ export const CREATE_TASK_TOOL: Tool = {
         description:
           "A longer description of the task, which can include markdown formatting",
       },
+      dartboard: {
+        type: "string",
+        description: "The title of the dartboard (project or list of tasks)",
+      },
+      parentId: {
+        type: "string",
+        description: "The ID of the parent task",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       status: {
         type: "string",
         description: "The status from the list of available statuses",
       },
+      type: {
+        type: "string",
+        description: "The type of the task from the list of available types",
+      },
+      assignees: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Array of assignee names or emails (if workspace allows multiple assignees)",
+      },
+      assignee: {
+        type: "string",
+        description:
+          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
+      },
       priority: {
         type: "string",
         description: "The priority (Critical, High, Medium, or Low)",
+      },
+      tags: {
+        type: "array",
+        items: { type: "string" },
+        description: "Array of tags to apply to the task",
       },
       size: {
         type: ["string", "number", "null"],
@@ -122,31 +151,6 @@ export const CREATE_TASK_TOOL: Tool = {
         type: "string",
         description:
           "The due date in ISO format (should be at 9:00am in user's timezone)",
-      },
-      dartboard: {
-        type: "string",
-        description: "The title of the dartboard (project or list of tasks)",
-      },
-      assignees: {
-        type: "array",
-        items: { type: "string" },
-        description:
-          "Array of assignee names or emails (if workspace allows multiple assignees)",
-      },
-      assignee: {
-        type: "string",
-        description:
-          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
-      },
-      tags: {
-        type: "array",
-        items: { type: "string" },
-        description: "Array of tags to apply to the task",
-      },
-      parentId: {
-        type: "string",
-        description: "The ID of the parent task",
-        pattern: "^[a-zA-Z0-9]{12}$",
       },
       customProperties: CUSTOM_PROPERTIES_SCHEMA,
     },
@@ -192,13 +196,42 @@ export const UPDATE_TASK_TOOL: Tool = {
         description:
           "A longer description of the task, which can include markdown formatting",
       },
+      dartboard: {
+        type: "string",
+        description: "The title of the dartboard (project or list of tasks)",
+      },
+      parentId: {
+        type: "string",
+        description: "The ID of the parent task",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       status: {
         type: "string",
         description: "The status from the list of available statuses",
       },
+      type: {
+        type: "string",
+        description: "The type of the task from the list of available types",
+      },
+      assignees: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Array of assignee names or emails (if workspace allows multiple assignees)",
+      },
+      assignee: {
+        type: "string",
+        description:
+          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
+      },
       priority: {
         type: "string",
         description: "The priority (Critical, High, Medium, or Low)",
+      },
+      tags: {
+        type: "array",
+        items: { type: "string" },
+        description: "Array of tags to apply to the task",
       },
       size: {
         type: ["string", "number", "null"],
@@ -213,31 +246,6 @@ export const UPDATE_TASK_TOOL: Tool = {
         type: "string",
         description:
           "The due date in ISO format (should be at 9:00am in user's timezone)",
-      },
-      dartboard: {
-        type: "string",
-        description: "The title of the dartboard (project or list of tasks)",
-      },
-      assignees: {
-        type: "array",
-        items: { type: "string" },
-        description:
-          "Array of assignee names or emails (if workspace allows multiple assignees)",
-      },
-      assignee: {
-        type: "string",
-        description:
-          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
-      },
-      tags: {
-        type: "array",
-        items: { type: "string" },
-        description: "Array of tags to apply to the task",
-      },
-      parentId: {
-        type: "string",
-        description: "The ID of the parent task",
-        pattern: "^[a-zA-Z0-9]{12}$",
       },
       customProperties: CUSTOM_PROPERTIES_SCHEMA,
     },
