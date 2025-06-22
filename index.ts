@@ -45,6 +45,7 @@ import {
   GET_TASK_TOOL,
   GET_VIEW_TOOL,
   LIST_DOCS_TOOL,
+  LIST_TASK_COMMENTS_TOOL,
   LIST_TASKS_TOOL,
   UPDATE_DOC_TOOL,
   UPDATE_TASK_TOOL,
@@ -196,6 +197,7 @@ const TOOLS = [
   UPDATE_TASK_TOOL,
   DELETE_TASK_TOOL,
   ADD_TASK_COMMENT_TOOL,
+  LIST_TASK_COMMENTS_TOOL,
   LIST_DOCS_TOOL,
   CREATE_DOC_TOOL,
   GET_DOC_TOOL,
@@ -432,6 +434,24 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
         return {
           content: [{ type: "text", text: JSON.stringify(comment, null, 2) }],
+        };
+      }
+      case LIST_TASK_COMMENTS_TOOL.name: {
+        const comments = await CommentService.listComments(
+          args.author as string,
+          args.author_id as string,
+          args.ids as string,
+          args.limit as number,
+          args.offset as number,
+          args.parent_id as string | null,
+          args.published_at_after as string,
+          args.published_at_before as string,
+          args.task as string,
+          args.task_id as string,
+          args.text as string
+        );
+        return {
+          content: [{ type: "text", text: JSON.stringify(comments, null, 2) }],
         };
       }
       case LIST_DOCS_TOOL.name: {

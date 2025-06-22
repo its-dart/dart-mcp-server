@@ -1198,10 +1198,8 @@ cross-spawn@^7.0.3, cross-spawn@^7.0.5:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-dart-tools@~0.3:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/dart-tools/-/dart-tools-0.3.7.tgz#f1f2981de8dd24ce9a9f0af83a2ef6cea8679b9f"
-  integrity sha512-8lm0BNskQGnuW3was7MhXNLWu94pRuKCI5MN3GsopRzvsCKyGWyha4ROeGc27wrguZfDZFSBywUVcLOAQDQjRQ==
+dart-tools@./../dart-tools-ts:
+  version "0.3.8"
   dependencies:
     axios "~1.9"
 

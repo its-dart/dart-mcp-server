@@ -86,7 +86,10 @@ export const LIST_TASKS_TOOL: Tool = {
       },
       ids: { type: "string", description: "Filter by IDs" },
       in_trash: { type: "boolean", description: "Filter by trash status" },
-      is_completed: { type: "boolean", description: "Filter by completion status" },
+      is_completed: {
+        type: "boolean",
+        description: "Filter by completion status",
+      },
       limit: { type: "number", description: "Number of results per page" },
       offset: {
         type: "number",
@@ -312,6 +315,62 @@ export const ADD_TASK_COMMENT_TOOL: Tool = {
   },
 };
 
+export const LIST_TASK_COMMENTS_TOOL: Tool = {
+  name: "list_task_comments",
+  description:
+    "List comments from Dart with optional filtering parameters. You can filter by author, task, text content, dates, and more.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      author: {
+        type: "string",
+        description: "Filter by author name or email",
+      },
+      author_id: {
+        type: "string",
+        description: "Filter by author ID",
+      },
+      ids: {
+        type: "string",
+        description: "Filter by comment IDs",
+      },
+      limit: {
+        type: "number",
+        description: "Number of results per page",
+      },
+      offset: {
+        type: "number",
+        description: "Initial index for pagination",
+      },
+      parent_id: {
+        type: "string",
+        description: "Filter by parent comment ID",
+      },
+      published_at_after: {
+        type: "string",
+        description: "Filter by published date after (ISO format)",
+      },
+      published_at_before: {
+        type: "string",
+        description: "Filter by published date before (ISO format)",
+      },
+      task: {
+        type: "string",
+        description: "Filter by task title",
+      },
+      task_id: {
+        type: "string",
+        description: "Filter by task ID",
+      },
+      text: {
+        type: "string",
+        description: "Filter by comment text content",
+      },
+    },
+    required: [],
+  },
+};
+
 export const LIST_DOCS_TOOL: Tool = {
   name: "list_docs",
   description:
@@ -359,10 +418,10 @@ export const LIST_DOCS_TOOL: Tool = {
             "created_at",
             "order",
             "title",
-            "updated_at"
-          ]
+            "updated_at",
+          ],
         },
-        description: "Ordering options (use - prefix for descending)"
+        description: "Ordering options (use - prefix for descending)",
       },
       text: {
         type: "string",
