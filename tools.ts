@@ -56,30 +56,75 @@ export const LIST_TASKS_TOOL: Tool = {
   inputSchema: {
     type: "object",
     properties: {
-      assignee: {type: "string", description: "Filter by assignee name or email" },
-      assigneeId: { type: "string", description: "Filter by assignee ID", pattern: "^[a-zA-Z0-9]{12}$" },
+      assignee: {
+        type: "string",
+        description: "Filter by assignee name or email",
+      },
+      assigneeId: {
+        type: "string",
+        description: "Filter by assignee ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       dartboard: { type: "string", description: "Filter by dartboard title" },
-      dartboardId: { type: "string", description: "Filter by dartboard ID", pattern: "^[a-zA-Z0-9]{12}$" },
-      description: { type: "string", description: "Filter by description content", },
-      dueAtAfter: { type: "string", description: "Filter by due date after (ISO format)" },
-      dueAtBefore: { type: "string", description: "Filter by due date before (ISO format)" },
+      dartboardId: {
+        type: "string",
+        description: "Filter by dartboard ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      description: {
+        type: "string",
+        description: "Filter by description content",
+      },
+      dueAtAfter: {
+        type: "string",
+        description: "Filter by due date after (ISO format)",
+      },
+      dueAtBefore: {
+        type: "string",
+        description: "Filter by due date before (ISO format)",
+      },
       ids: { type: "string", description: "Filter by IDs" },
       inTrash: { type: "boolean", description: "Filter by trash status" },
-      isCompleted: { type: "boolean", description: "Filter by completion status" },
+      isCompleted: {
+        type: "boolean",
+        description: "Filter by completion status",
+      },
       limit: { type: "number", description: "Number of results per page" },
       offset: { type: "number", description: "Initial index for pagination" },
-      parentId: { type: "string", description: "Filter by parent task ID", pattern: "^[a-zA-Z0-9]{12}$" },
+      parentId: {
+        type: "string",
+        description: "Filter by parent task ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       priority: { type: "string", description: "Filter by priority" },
       size: { type: "number", description: "Filter by task size" },
-      startAtAfter: { type: "string", description: "Filter by start date after (ISO format)" },
-      startAtBefore: { type: "string", description: "Filter by start date before (ISO format)" },
+      startAtAfter: {
+        type: "string",
+        description: "Filter by start date after (ISO format)",
+      },
+      startAtBefore: {
+        type: "string",
+        description: "Filter by start date before (ISO format)",
+      },
       status: { type: "string", description: "Filter by status" },
-      statusId: { type: "string", description: "Filter by status ID", pattern: "^[a-zA-Z0-9]{12}$" },
+      statusId: {
+        type: "string",
+        description: "Filter by status ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       tag: { type: "string", description: "Filter by tag" },
-      tagId: { type: "string", description: "Filter by tag ID", pattern: "^[a-zA-Z0-9]{12}$" },
+      tagId: {
+        type: "string",
+        description: "Filter by tag ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       title: { type: "string", description: "Filter by title" },
       type: { type: "string", description: "Filter by task type" },
-      typeId: { type: "string", description: "Filter by task type ID", pattern: "^[a-zA-Z0-9]{12}$" },
+      typeId: {
+        type: "string",
+        description: "Filter by task type ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
     },
     required: [],
   },
@@ -292,6 +337,62 @@ export const ADD_TASK_COMMENT_TOOL: Tool = {
   },
 };
 
+export const LIST_TASK_COMMENTS_TOOL: Tool = {
+  name: "list_task_comments",
+  description:
+    "List comments from Dart with optional filtering parameters. You can filter by author, task, text content, dates, and more.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      taskId: {
+        type: "string",
+        description: "Filter by task ID",
+      },
+      author: {
+        type: "string",
+        description: "Filter by author name or email",
+      },
+      authorId: {
+        type: "string",
+        description: "Filter by author ID",
+      },
+      ids: {
+        type: "string",
+        description: "Filter by comment IDs",
+      },
+      limit: {
+        type: "number",
+        description: "Number of results per page",
+      },
+      offset: {
+        type: "number",
+        description: "Initial index for pagination",
+      },
+      parentId: {
+        type: "string",
+        description: "Filter by parent comment ID",
+      },
+      publishedAtAfter: {
+        type: "string",
+        description: "Filter by published date after (ISO format)",
+      },
+      publishedAtBefore: {
+        type: "string",
+        description: "Filter by published date before (ISO format)",
+      },
+      task: {
+        type: "string",
+        description: "Filter by task title",
+      },
+      text: {
+        type: "string",
+        description: "Filter by comment text content",
+      },
+    },
+    required: ["taskId"],
+  },
+};
+
 export const LIST_DOCS_TOOL: Tool = {
   name: "list_docs",
   description:
@@ -300,7 +401,11 @@ export const LIST_DOCS_TOOL: Tool = {
     type: "object",
     properties: {
       folder: { type: "string", description: "Filter by folder title" },
-      folderId: { type: "string", description: "Filter by folder ID", pattern: "^[a-zA-Z0-9]{12}$" },
+      folderId: {
+        type: "string",
+        description: "Filter by folder ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       ids: { type: "string", description: "Filter by IDs" },
       inTrash: { type: "boolean", description: "Filter by trash status" },
       limit: { type: "number", description: "Number of results per page" },
@@ -311,11 +416,23 @@ export const LIST_DOCS_TOOL: Tool = {
         type: "array",
         items: {
           type: "string",
-          enum: [ "-created_at", "-order", "-title", "-updated_at", "created_at", "order", "title", "updated_at" ]
+          enum: [
+            "-created_at",
+            "-order",
+            "-title",
+            "-updated_at",
+            "created_at",
+            "order",
+            "title",
+            "updated_at",
+          ],
         },
-        description: "Ordering options (use - prefix for descending)"
+        description: "Ordering options (use - prefix for descending)",
       },
-      s: { type: "string", description: "Search by title, text, or folder title" },
+      s: {
+        type: "string",
+        description: "Search by title, text, or folder title",
+      },
     },
     required: [],
   },

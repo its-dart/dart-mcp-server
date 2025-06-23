@@ -45,6 +45,7 @@ import {
   GET_TASK_TOOL,
   GET_VIEW_TOOL,
   LIST_DOCS_TOOL,
+  LIST_TASK_COMMENTS_TOOL,
   LIST_TASKS_TOOL,
   UPDATE_DOC_TOOL,
   UPDATE_TASK_TOOL,
@@ -63,13 +64,13 @@ const packageJson = JSON.parse(
   readFileSync(join(dirname(filename), "..", "package.json"), "utf-8"),
 );
 
-const getIdValidated = (strMaybe: any): string => {
+const getIdValidated = (strMaybe: any, name: string = "ID"): string => {
   if (typeof strMaybe !== "string" && !(strMaybe instanceof String)) {
-    throw new Error("ID must be a string");
+    throw new Error(`${name} must be a string`);
   }
   const id = strMaybe.toString();
   if (!ID_REGEX.test(id)) {
-    throw new Error(`ID must be 12 alphanumeric characters`);
+    throw new Error(`${name} must be 12 alphanumeric characters`);
   }
   return id;
 };
@@ -189,18 +190,24 @@ const DOC_RESOURCE_TEMPLATE: ResourceTemplate = {
 
 // Tools
 const TOOLS = [
+  // Config
   GET_CONFIG_TOOL,
-  LIST_TASKS_TOOL,
+  // Tasks
   CREATE_TASK_TOOL,
+  LIST_TASKS_TOOL,
   GET_TASK_TOOL,
   UPDATE_TASK_TOOL,
   DELETE_TASK_TOOL,
-  ADD_TASK_COMMENT_TOOL,
-  LIST_DOCS_TOOL,
+  // Docs
   CREATE_DOC_TOOL,
+  LIST_DOCS_TOOL,
   GET_DOC_TOOL,
   UPDATE_DOC_TOOL,
   DELETE_DOC_TOOL,
+  // Comments
+  ADD_TASK_COMMENT_TOOL,
+  LIST_TASK_COMMENTS_TOOL,
+  // Other
   GET_DARTBOARD_TOOL,
   GET_FOLDER_TOOL,
   GET_VIEW_TOOL,
@@ -380,23 +387,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     switch (name) {
+      // Config
       case GET_CONFIG_TOOL.name: {
         const config = await ConfigService.getConfig();
         return {
           content: [{ type: "text", text: JSON.stringify(config, null, 2) }],
         };
       }
-      case LIST_TASKS_TOOL.name: {
-        const tasks = await TaskService.listTasks(args);
-        return {
-          content: [{ type: "text", text: JSON.stringify(tasks, null, 2) }],
-        };
-      }
+      // Tasks
       case CREATE_TASK_TOOL.name: {
         const taskData = args as TaskCreate;
         const task = await TaskService.createTask({ item: taskData });
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
+        };
+      }
+      case LIST_TASKS_TOOL.name: {
+        const tasks = await TaskService.listTasks(args);
+        return {
+          content: [{ type: "text", text: JSON.stringify(tasks, null, 2) }],
         };
       }
       case GET_TASK_TOOL.name: {
@@ -423,23 +432,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
       }
-      case ADD_TASK_COMMENT_TOOL.name: {
-        const taskId = getIdValidated(args.taskId);
-        const text = args.text;
-        const commentData = { taskId, text } as CommentCreate;
-        const comment = await CommentService.createComment({
-          item: commentData,
-        });
-        return {
-          content: [{ type: "text", text: JSON.stringify(comment, null, 2) }],
-        };
-      }
-      case LIST_DOCS_TOOL.name: {
-        const docs = await DocService.listDocs(args);
-        return {
-          content: [{ type: "text", text: JSON.stringify(docs, null, 2) }],
-        };
-      }
+      // Docs
       case CREATE_DOC_TOOL.name: {
         const docData = args as DocCreate;
         const doc = await DocService.createDoc({
@@ -447,6 +440,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
+        };
+      }
+      case LIST_DOCS_TOOL.name: {
+        const docs = await DocService.listDocs(args);
+        return {
+          content: [{ type: "text", text: JSON.stringify(docs, null, 2) }],
         };
       }
       case GET_DOC_TOOL.name: {
@@ -471,6 +470,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
       }
+      // Comments
+      case ADD_TASK_COMMENT_TOOL.name: {
+        const taskId = getIdValidated(args.taskId);
+        const text = args.text;
+        const commentData = { taskId, text } as CommentCreate;
+        const comment = await CommentService.createComment({
+          item: commentData,
+        });
+        return {
+          content: [{ type: "text", text: JSON.stringify(comment, null, 2) }],
+        };
+      }
+      case LIST_TASK_COMMENTS_TOOL.name: {
+        const taskId = getIdValidated(args.taskId, "taskId");
+        const comments = await CommentService.listComments({ taskId, ...args });
+        return {
+          content: [{ type: "text", text: JSON.stringify(comments, null, 2) }],
+        };
+      }
+      // Other tools
       case GET_DARTBOARD_TOOL.name: {
         const id = getIdValidated(args.id);
         const dartboard = await DartboardService.retrieveDartboard(id);
