@@ -322,11 +322,15 @@ export const LIST_TASK_COMMENTS_TOOL: Tool = {
   inputSchema: {
     type: "object",
     properties: {
+      taskId: {
+        type: "string",
+        description: "Filter by task ID",
+      },
       author: {
         type: "string",
         description: "Filter by author name or email",
       },
-      author_id: {
+      authorId: {
         type: "string",
         description: "Filter by author ID",
       },
@@ -342,15 +346,15 @@ export const LIST_TASK_COMMENTS_TOOL: Tool = {
         type: "number",
         description: "Initial index for pagination",
       },
-      parent_id: {
+      parentId: {
         type: "string",
         description: "Filter by parent comment ID",
       },
-      published_at_after: {
+      publishedAtAfter: {
         type: "string",
         description: "Filter by published date after (ISO format)",
       },
-      published_at_before: {
+      publishedAtBefore: {
         type: "string",
         description: "Filter by published date before (ISO format)",
       },
@@ -358,16 +362,12 @@ export const LIST_TASK_COMMENTS_TOOL: Tool = {
         type: "string",
         description: "Filter by task title",
       },
-      task_id: {
-        type: "string",
-        description: "Filter by task ID",
-      },
       text: {
         type: "string",
         description: "Filter by comment text content",
       },
     },
-    required: [],
+    required: ["taskId"],
   },
 };
 

@@ -64,13 +64,13 @@ const packageJson = JSON.parse(
   readFileSync(join(dirname(filename), "..", "package.json"), "utf-8"),
 );
 
-const getIdValidated = (strMaybe: any): string => {
+const getIdValidated = (strMaybe: any, name: string = "ID"): string => {
   if (typeof strMaybe !== "string" && !(strMaybe instanceof String)) {
-    throw new Error("ID must be a string");
+    throw new Error(`${name} must be a string`);
   }
   const id = strMaybe.toString();
   if (!ID_REGEX.test(id)) {
-    throw new Error(`ID must be 12 alphanumeric characters`);
+    throw new Error(`${name} must be 12 alphanumeric characters`);
   }
   return id;
 };
@@ -437,19 +437,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
       case LIST_TASK_COMMENTS_TOOL.name: {
-        const comments = await CommentService.listComments(
-          args.author as string,
-          args.author_id as string,
-          args.ids as string,
-          args.limit as number,
-          args.offset as number,
-          args.parent_id as string | null,
-          args.published_at_after as string,
-          args.published_at_before as string,
-          args.task as string,
-          args.task_id as string,
-          args.text as string
-        );
+        const taskId = getIdValidated(args.taskId, "taskId");
+        const comments = await CommentService.listComments({ taskId, ...args });
         return {
           content: [{ type: "text", text: JSON.stringify(comments, null, 2) }],
         };
