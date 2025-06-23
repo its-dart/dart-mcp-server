@@ -382,23 +382,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     switch (name) {
+      // Config
       case GET_CONFIG_TOOL.name: {
         const config = await ConfigService.getConfig();
         return {
           content: [{ type: "text", text: JSON.stringify(config, null, 2) }],
         };
       }
-      case LIST_TASKS_TOOL.name: {
-        const tasks = await TaskService.listTasks(args);
-        return {
-          content: [{ type: "text", text: JSON.stringify(tasks, null, 2) }],
-        };
-      }
+      // Tasks
       case CREATE_TASK_TOOL.name: {
         const taskData = args as TaskCreate;
         const task = await TaskService.createTask({ item: taskData });
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
+        };
+      }
+      case LIST_TASKS_TOOL.name: {
+        const tasks = await TaskService.listTasks(args);
+        return {
+          content: [{ type: "text", text: JSON.stringify(tasks, null, 2) }],
         };
       }
       case GET_TASK_TOOL.name: {
@@ -425,30 +427,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
       }
-      case ADD_TASK_COMMENT_TOOL.name: {
-        const taskId = getIdValidated(args.taskId);
-        const text = args.text;
-        const commentData = { taskId, text } as CommentCreate;
-        const comment = await CommentService.createComment({
-          item: commentData,
-        });
-        return {
-          content: [{ type: "text", text: JSON.stringify(comment, null, 2) }],
-        };
-      }
-      case LIST_TASK_COMMENTS_TOOL.name: {
-        const taskId = getIdValidated(args.taskId, "taskId");
-        const comments = await CommentService.listComments({ taskId, ...args });
-        return {
-          content: [{ type: "text", text: JSON.stringify(comments, null, 2) }],
-        };
-      }
-      case LIST_DOCS_TOOL.name: {
-        const docs = await DocService.listDocs(args);
-        return {
-          content: [{ type: "text", text: JSON.stringify(docs, null, 2) }],
-        };
-      }
+      // Docs
       case CREATE_DOC_TOOL.name: {
         const docData = args as DocCreate;
         const doc = await DocService.createDoc({
@@ -456,6 +435,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
+        };
+      }
+      case LIST_DOCS_TOOL.name: {
+        const docs = await DocService.listDocs(args);
+        return {
+          content: [{ type: "text", text: JSON.stringify(docs, null, 2) }],
         };
       }
       case GET_DOC_TOOL.name: {
@@ -480,6 +465,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
       }
+      // Comments
+      case ADD_TASK_COMMENT_TOOL.name: {
+        const taskId = getIdValidated(args.taskId);
+        const text = args.text;
+        const commentData = { taskId, text } as CommentCreate;
+        const comment = await CommentService.createComment({
+          item: commentData,
+        });
+        return {
+          content: [{ type: "text", text: JSON.stringify(comment, null, 2) }],
+        };
+      }
+      case LIST_TASK_COMMENTS_TOOL.name: {
+        const taskId = getIdValidated(args.taskId, "taskId");
+        const comments = await CommentService.listComments({ taskId, ...args });
+        return {
+          content: [{ type: "text", text: JSON.stringify(comments, null, 2) }],
+        };
+      }
+      // Other tools
       case GET_DARTBOARD_TOOL.name: {
         const id = getIdValidated(args.id);
         const dartboard = await DartboardService.retrieveDartboard(id);
