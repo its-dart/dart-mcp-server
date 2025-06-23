@@ -60,59 +60,71 @@ export const LIST_TASKS_TOOL: Tool = {
         type: "string",
         description: "Filter by assignee name or email",
       },
-      assignee_id: {
+      assigneeId: {
         type: "string",
         description: "Filter by assignee ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
       },
-      dartboard: {
-        type: "string",
-        description: "Filter by dartboard title",
-      },
-      dartboard_id: {
+      dartboard: { type: "string", description: "Filter by dartboard title" },
+      dartboardId: {
         type: "string",
         description: "Filter by dartboard ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
       },
       description: {
         type: "string",
         description: "Filter by description content",
       },
-      due_at_before: {
-        type: "string",
-        description: "Filter by due date before (ISO format)",
-      },
-      due_at_after: {
+      dueAtAfter: {
         type: "string",
         description: "Filter by due date after (ISO format)",
       },
+      dueAtBefore: {
+        type: "string",
+        description: "Filter by due date before (ISO format)",
+      },
       ids: { type: "string", description: "Filter by IDs" },
-      in_trash: { type: "boolean", description: "Filter by trash status" },
-      is_completed: {
+      inTrash: { type: "boolean", description: "Filter by trash status" },
+      isCompleted: {
         type: "boolean",
         description: "Filter by completion status",
       },
       limit: { type: "number", description: "Number of results per page" },
-      offset: {
-        type: "number",
-        description: "Initial index for pagination",
+      offset: { type: "number", description: "Initial index for pagination" },
+      parentId: {
+        type: "string",
+        description: "Filter by parent task ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
       },
       priority: { type: "string", description: "Filter by priority" },
       size: { type: "number", description: "Filter by task size" },
-      start_at_before: {
-        type: "string",
-        description: "Filter by start date before (ISO format)",
-      },
-      start_at_after: {
+      startAtAfter: {
         type: "string",
         description: "Filter by start date after (ISO format)",
       },
+      startAtBefore: {
+        type: "string",
+        description: "Filter by start date before (ISO format)",
+      },
       status: { type: "string", description: "Filter by status" },
-      status_id: { type: "string", description: "Filter by status ID" },
+      statusId: {
+        type: "string",
+        description: "Filter by status ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       tag: { type: "string", description: "Filter by tag" },
-      tag_id: { type: "string", description: "Filter by tag ID" },
-      parent_id: { type: "string", description: "Filter by parent task ID" },
-      type: { type: "string", description: "Filter by task type" },
-      type_id: { type: "string", description: "Filter by task type ID" },
+      tagId: {
+        type: "string",
+        description: "Filter by tag ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       title: { type: "string", description: "Filter by title" },
+      type: { type: "string", description: "Filter by task type" },
+      typeId: {
+        type: "string",
+        description: "Filter by task type ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
     },
     required: [],
   },
@@ -134,13 +146,42 @@ export const CREATE_TASK_TOOL: Tool = {
         description:
           "A longer description of the task, which can include markdown formatting",
       },
+      dartboard: {
+        type: "string",
+        description: "The title of the dartboard (project or list of tasks)",
+      },
+      parentId: {
+        type: "string",
+        description: "The ID of the parent task",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       status: {
         type: "string",
         description: "The status from the list of available statuses",
       },
+      type: {
+        type: "string",
+        description: "The type of the task from the list of available types",
+      },
+      assignees: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Array of assignee names or emails (if workspace allows multiple assignees)",
+      },
+      assignee: {
+        type: "string",
+        description:
+          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
+      },
       priority: {
         type: "string",
         description: "The priority (Critical, High, Medium, or Low)",
+      },
+      tags: {
+        type: "array",
+        items: { type: "string" },
+        description: "Array of tags to apply to the task",
       },
       size: {
         type: ["string", "number", "null"],
@@ -155,30 +196,6 @@ export const CREATE_TASK_TOOL: Tool = {
         type: "string",
         description:
           "The due date in ISO format (should be at 9:00am in user's timezone)",
-      },
-      dartboard: {
-        type: "string",
-        description: "The title of the dartboard (project or list of tasks)",
-      },
-      assignees: {
-        type: "array",
-        items: { type: "string" },
-        description:
-          "Array of assignee names or emails (if workspace allows multiple assignees)",
-      },
-      assignee: {
-        type: "string",
-        description:
-          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
-      },
-      tags: {
-        type: "array",
-        items: { type: "string" },
-        description: "Array of tags to apply to the task",
-      },
-      parentId: {
-        type: "string",
-        description: "The ID of the parent task",
       },
       customProperties: CUSTOM_PROPERTIES_SCHEMA,
     },
@@ -224,13 +241,42 @@ export const UPDATE_TASK_TOOL: Tool = {
         description:
           "A longer description of the task, which can include markdown formatting",
       },
+      dartboard: {
+        type: "string",
+        description: "The title of the dartboard (project or list of tasks)",
+      },
+      parentId: {
+        type: "string",
+        description: "The ID of the parent task",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
       status: {
         type: "string",
         description: "The status from the list of available statuses",
       },
+      type: {
+        type: "string",
+        description: "The type of the task from the list of available types",
+      },
+      assignees: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Array of assignee names or emails (if workspace allows multiple assignees)",
+      },
+      assignee: {
+        type: "string",
+        description:
+          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
+      },
       priority: {
         type: "string",
         description: "The priority (Critical, High, Medium, or Low)",
+      },
+      tags: {
+        type: "array",
+        items: { type: "string" },
+        description: "Array of tags to apply to the task",
       },
       size: {
         type: ["string", "number", "null"],
@@ -245,30 +291,6 @@ export const UPDATE_TASK_TOOL: Tool = {
         type: "string",
         description:
           "The due date in ISO format (should be at 9:00am in user's timezone)",
-      },
-      dartboard: {
-        type: "string",
-        description: "The title of the dartboard (project or list of tasks)",
-      },
-      assignees: {
-        type: "array",
-        items: { type: "string" },
-        description:
-          "Array of assignee names or emails (if workspace allows multiple assignees)",
-      },
-      assignee: {
-        type: "string",
-        description:
-          "Single assignee name or email (if workspace doesn't allow multiple assignees)",
-      },
-      tags: {
-        type: "array",
-        items: { type: "string" },
-        description: "Array of tags to apply to the task",
-      },
-      parentId: {
-        type: "string",
-        description: "The ID of the parent task",
       },
       customProperties: CUSTOM_PROPERTIES_SCHEMA,
     },
@@ -378,34 +400,18 @@ export const LIST_DOCS_TOOL: Tool = {
   inputSchema: {
     type: "object",
     properties: {
-      folder: {
-        type: "string",
-        description: "Filter by folder title",
-      },
-      folder_id: {
+      folder: { type: "string", description: "Filter by folder title" },
+      folderId: {
         type: "string",
         description: "Filter by folder ID",
+        pattern: "^[a-zA-Z0-9]{12}$",
       },
-      ids: {
-        type: "string",
-        description: "Filter by IDs",
-      },
-      in_trash: {
-        type: "boolean",
-        description: "Filter by trash status",
-      },
-      limit: {
-        type: "number",
-        description: "Number of results per page",
-      },
-      offset: {
-        type: "number",
-        description: "Initial index for pagination",
-      },
-      s: {
-        type: "string",
-        description: "Search by title, text, or folder title",
-      },
+      ids: { type: "string", description: "Filter by IDs" },
+      inTrash: { type: "boolean", description: "Filter by trash status" },
+      limit: { type: "number", description: "Number of results per page" },
+      offset: { type: "number", description: "Initial index for pagination" },
+      text: { type: "string", description: "Filter by text content" },
+      title: { type: "string", description: "Filter by title" },
       o: {
         type: "array",
         items: {
@@ -423,13 +429,9 @@ export const LIST_DOCS_TOOL: Tool = {
         },
         description: "Ordering options (use - prefix for descending)",
       },
-      text: {
+      s: {
         type: "string",
-        description: "Filter by text content",
-      },
-      title: {
-        type: "string",
-        description: "Filter by title",
+        description: "Search by title, text, or folder title",
       },
     },
     required: [],

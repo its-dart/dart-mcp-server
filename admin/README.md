@@ -10,7 +10,7 @@
 1. Copy `.env.example` to `.env` and fill out the environment variables
 2. Run `yarn install` to install the dependencies
 3. Run `yarn build` to build the library
-4. Debug with the MCP inspector
+4. To debug with the MCP inspector
    1. Run `yarn start:mcp-inspector`
    2. Open [the page for the inspector](http://127.0.0.1:6274)
    3. Click 'Connect'
