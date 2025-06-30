@@ -38,6 +38,53 @@ const CUSTOM_PROPERTIES_SCHEMA = {
   },
 };
 
+const TASK_RELATIONSHIPS_SCHEMA = {
+  type: "object",
+  description: "Task relationships including subtasks, blockers, duplicates, and related tasks",
+  properties: {
+    subtaskIds: {
+      type: "array",
+      items: {
+        type: "string",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      description: "List of task IDs that are subtasks of this task (PARENT_OF relationship, forward direction)",
+    },
+    blockerIds: {
+      type: "array",
+      items: {
+        type: "string",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      description: "List of task IDs that block this task (BLOCKS relationship, backward direction)",
+    },
+    blockingIds: {
+      type: "array",
+      items: {
+        type: "string",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      description: "List of task IDs that this task blocks (BLOCKS relationship, forward direction)",
+    },
+    duplicateIds: {
+      type: "array",
+      items: {
+        type: "string",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      description: "List of task IDs that are duplicates of this task (DUPLICATES relationship, both directions)",
+    },
+    relatedIds: {
+      type: "array",
+      items: {
+        type: "string",
+        pattern: "^[a-zA-Z0-9]{12}$",
+      },
+      description: "List of task IDs that are related to this task (RELATES_TO relationship, both directions)",
+    },
+  },
+};
+
 export const GET_CONFIG_TOOL: Tool = {
   name: "get_config",
   description:
@@ -133,7 +180,7 @@ export const LIST_TASKS_TOOL: Tool = {
 export const CREATE_TASK_TOOL: Tool = {
   name: "create_task",
   description:
-    "Create a new task in Dart. You can specify title, description, status, priority, size, dates, dartboard, assignees, tags, parent task, and custom properties.",
+    "Create a new task in Dart. You can specify title, description, status, priority, size, dates, dartboard, assignees, tags, parent task, custom properties, and task relationships.",
   inputSchema: {
     type: "object",
     properties: {
@@ -198,6 +245,7 @@ export const CREATE_TASK_TOOL: Tool = {
           "The due date in ISO format (should be at 9:00am in user's timezone)",
       },
       customProperties: CUSTOM_PROPERTIES_SCHEMA,
+      taskRelationships: TASK_RELATIONSHIPS_SCHEMA,
     },
     required: ["title"],
   },
@@ -223,7 +271,7 @@ export const GET_TASK_TOOL: Tool = {
 export const UPDATE_TASK_TOOL: Tool = {
   name: "update_task",
   description:
-    "Update an existing task. You can modify any of its properties including title, description, status, priority, dates, assignees, tags, and custom properties.",
+    "Update an existing task. You can modify any of its properties including title, description, status, priority, dates, assignees, tags, custom properties, and task relationships.",
   inputSchema: {
     type: "object",
     properties: {
@@ -293,6 +341,7 @@ export const UPDATE_TASK_TOOL: Tool = {
           "The due date in ISO format (should be at 9:00am in user's timezone)",
       },
       customProperties: CUSTOM_PROPERTIES_SCHEMA,
+      taskRelationships: TASK_RELATIONSHIPS_SCHEMA,
     },
     required: ["id"],
   },
