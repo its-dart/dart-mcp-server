@@ -36,6 +36,7 @@ const CUSTOM_PROPERTIES_SCHEMA = {
       { title: "CustomPropertyUserSingle", type: ["string", "null"] },
     ],
   },
+  required: [],
 };
 
 const TASK_RELATIONSHIPS_SCHEMA = {
@@ -48,7 +49,7 @@ const TASK_RELATIONSHIPS_SCHEMA = {
         type: "string",
         pattern: "^[a-zA-Z0-9]{12}$",
       },
-      description: "List of task IDs that are subtasks of this task (PARENT_OF relationship, forward direction)",
+      description: "List of task IDs that are subtasks of this task",
     },
     blockerIds: {
       type: "array",
@@ -56,7 +57,7 @@ const TASK_RELATIONSHIPS_SCHEMA = {
         type: "string",
         pattern: "^[a-zA-Z0-9]{12}$",
       },
-      description: "List of task IDs that block this task (BLOCKS relationship, backward direction)",
+      description: "List of task IDs that block this task",
     },
     blockingIds: {
       type: "array",
@@ -64,7 +65,7 @@ const TASK_RELATIONSHIPS_SCHEMA = {
         type: "string",
         pattern: "^[a-zA-Z0-9]{12}$",
       },
-      description: "List of task IDs that this task blocks (BLOCKS relationship, forward direction)",
+      description: "List of task IDs that this task blocks",
     },
     duplicateIds: {
       type: "array",
@@ -72,7 +73,7 @@ const TASK_RELATIONSHIPS_SCHEMA = {
         type: "string",
         pattern: "^[a-zA-Z0-9]{12}$",
       },
-      description: "List of task IDs that are duplicates of this task (DUPLICATES relationship, both directions)",
+      description: "List of task IDs that are duplicates of this task",
     },
     relatedIds: {
       type: "array",
@@ -80,7 +81,7 @@ const TASK_RELATIONSHIPS_SCHEMA = {
         type: "string",
         pattern: "^[a-zA-Z0-9]{12}$",
       },
-      description: "List of task IDs that are related to this task (RELATES_TO relationship, both directions)",
+      description: "List of task IDs that are related to this task",
     },
   },
   required: [],
