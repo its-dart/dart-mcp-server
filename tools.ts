@@ -83,6 +83,7 @@ const TASK_RELATIONSHIPS_SCHEMA = {
       description: "List of task IDs that are related to this task (RELATES_TO relationship, both directions)",
     },
   },
+  required: [],
 };
 
 export const GET_CONFIG_TOOL: Tool = {
