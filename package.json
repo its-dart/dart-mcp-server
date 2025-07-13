@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/its-dart/dart-mcp-server.git"
   },
-  "bugs": "https://app.itsdart.com/p/r/JFyPnhL9En61",
+  "bugs": "https://app.dartai.com/p/r/JFyPnhL9En61",
   "type": "module",
   "bin": {
     "dart-mcp-server": "dist/index.js"

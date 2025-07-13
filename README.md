@@ -89,7 +89,7 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
 #### Claude Code
 
 1. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started) as needed
-2. Copy your authentication token from [your Dart profile](https://app.itsdart.com/?settings=account)
+2. Copy your authentication token from [your Dart profile](https://app.dartai.com/?settings=account)
 3. Run the following command, being sure to replace `dsa...` with your actual Dart token
 
    ```bash
@@ -122,7 +122,7 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
 ### Set up the MCP server
 
 1. [Install npx](https://nodejs.org/en/download), which comes bundled with Node, as needed
-2. Copy your authentication token from [your Dart profile](https://app.itsdart.com/?settings=account)
+2. Copy your authentication token from [your Dart profile](https://app.dartai.com/?settings=account)
 3. Add the following to your MCP setup, being sure to replace `dsa...` with your actual Dart token
 
    ```json
@@ -145,7 +145,7 @@ If the `npx` setup above does not work well, we also provide a Docker setup. Fol
 
 1. [Install Docker](https://www.docker.com/products/docker-desktop/) as needed
 2. Build the Docker container with `docker build -t mcp/dart .`
-3. Copy your authentication token from [your Dart profile](https://app.itsdart.com/?settings=account)
+3. Copy your authentication token from [your Dart profile](https://app.dartai.com/?settings=account)
 4. Add the following to your MCP setup, being sure to replace `dsa...` with your actual Dart token
 
    ```json
@@ -168,9 +168,9 @@ If the `npx` setup above does not work well, we also provide a Docker setup. Fol
 ## Help and Resources
 
 - [Homepage](https://dartai.com/?nr=1)
-- [Web App](https://app.itsdart.com/)
+- [Web App](https://app.dartai.com/)
 - [Help Center](https://help.dartai.com/)
-- [Bugs and Features](https://app.itsdart.com/p/r/JFyPnhL9En61)
+- [Bugs and Features](https://app.dartai.com/p/r/JFyPnhL9En61)
 - [Library Source](https://github.com/its-dart/dart-mcp-server/)
 - [Chat on Discord](https://discord.gg/RExv8jEkSh)
 - Email us at [support@dartai.com](mailto:support@dartai.com)
