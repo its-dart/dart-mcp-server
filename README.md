@@ -93,7 +93,7 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
 3. Run the following command, being sure to replace `dsa...` with your actual Dart token
 
    ```bash
-   claude mcp add dart -e DART_TOKEN=dsa_... -- npx -y dart-mcp-server
+   claude mcp add dart -e DART_TOKEN=dsa_... -- npx -y dart-mcp-server@latest
    ```
 
 #### Cursor
@@ -130,7 +130,7 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
      "mcpServers": {
        "dart": {
          "command": "npx",
-         "args": ["-y", "dart-mcp-server"],
+         "args": ["-y", "dart-mcp-server@latest"],
          "env": {
            "DART_TOKEN": "dsa_..."
          }
