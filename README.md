@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/its-dart-dart-mcp-server-badge.jpg)](https://mseep.ai/app/its-dart-dart-mcp-server)
+
 <div align="center">
   <h1>Dart MCP Server</h1>
   <p>
