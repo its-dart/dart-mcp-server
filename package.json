@@ -1,6 +1,6 @@
 {
   "name": "dart-mcp-server",
-  "version": "0.1.23",
+  "version": "0.2.0",
   "description": "The Dart MCP server",
   "license": "MIT",
   "author": "Dart (software@dartai.com)",
