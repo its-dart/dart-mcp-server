@@ -39,7 +39,7 @@
 
 ## Dependency updating
 
-1. Update node, replace the current version in `dockerfile` with the latest stable version [here](https://nodejs.org/en/download)
+1. Update node, replace the current version in `dockerfile` with [the latest stable version](https://nodejs.org/en/download)
 2. Run `yarn req-up-all` and select everything to update all FE dependencies
 3. Manually set the versions in `dependencies`, but not `devDependencies`, to be `~` the lowest functional minor version
 4. Run `yarn install`

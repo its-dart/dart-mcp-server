@@ -9,7 +9,7 @@
 [Dart](https://dartai.com?nr=1) is Project Management powered by AI.
 
 > [!WARNING]
-> The Dart local MCP server is deprecated in favor of the simplified and improved hosted Dart MCP server, which you can [configure with these instructions](https://help.dartai.com/en/articles/10733406)
+> The Dart local MCP server is deprecated in favor of the simplified and improved hosted Dart MCP server, which you can [configure with these instructions](https://help.dartai.com/en/articles/10733406).
 
 <details>
 <summary>Deprecated information</summary>
