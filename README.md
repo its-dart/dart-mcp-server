@@ -8,6 +8,11 @@
 
 [Dart](https://dartai.com?nr=1) is Project Management powered by AI.
 
+> [!WARNING]
+> The Dart local MCP server is deprecated in favor of the simplified and improved hosted Dart MCP server, which you can [configure with these instructions](https://help.dartai.com/en/articles/10733406)
+
+<details>
+<summary>Deprecated information</summary>
 `dart-mcp-server` is the official AI [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol) server for Dart.
 
 - [Features](#features)
@@ -128,7 +133,7 @@ The easiest way to run the MCP server is with `npx`, but a Docker setup is also 
    ```json
    {
      "mcpServers": {
-       "dart": {
+       "Dart": {
          "command": "npx",
          "args": ["-y", "dart-mcp-server@latest"],
          "env": {
@@ -151,7 +156,7 @@ If the `npx` setup above does not work well, we also provide a Docker setup. Fol
    ```json
    {
      "mcpServers": {
-       "dart": {
+       "Dart": {
          "command": "bash",
          "args": [
            "-c",
@@ -182,3 +187,4 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ## License
 
 This project is licensed under [the MIT License](LICENSE).
+</details>
