@@ -340,7 +340,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   }
 
   if (protocol === TASK_PROTOCOL) {
-    const task = await TaskService.retrieveTask(path);
+    const task = await TaskService.getTask(path);
     return {
       contents: [
         {
@@ -353,7 +353,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   }
 
   if (protocol === DOC_PROTOCOL) {
-    const doc = await DocService.retrieveDoc(path);
+    const doc = await DocService.getDoc(path);
     return {
       contents: [
         {
@@ -410,7 +410,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
       case GET_TASK_TOOL.name: {
         const id = getIdValidated(args.id);
-        const task = await TaskService.retrieveTask(id);
+        const task = await TaskService.getTask(id);
         return {
           content: [{ type: "text", text: JSON.stringify(task, null, 2) }],
         };
@@ -450,7 +450,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
       case GET_DOC_TOOL.name: {
         const id = getIdValidated(args.id);
-        const doc = await DocService.retrieveDoc(id);
+        const doc = await DocService.getDoc(id);
         return {
           content: [{ type: "text", text: JSON.stringify(doc, null, 2) }],
         };
@@ -475,7 +475,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const taskId = getIdValidated(args.taskId);
         const text = args.text;
         const commentData = { taskId, text } as CommentCreate;
-        const comment = await CommentService.createComment({
+        const comment = await CommentService.addTaskComment({
           item: commentData,
         });
         return {
@@ -492,21 +492,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       // Other tools
       case GET_DARTBOARD_TOOL.name: {
         const id = getIdValidated(args.id);
-        const dartboard = await DartboardService.retrieveDartboard(id);
+        const dartboard = await DartboardService.getDartboard(id);
         return {
           content: [{ type: "text", text: JSON.stringify(dartboard, null, 2) }],
         };
       }
       case GET_FOLDER_TOOL.name: {
         const id = getIdValidated(args.id);
-        const folder = await FolderService.retrieveFolder(id);
+        const folder = await FolderService.getFolder(id);
         return {
           content: [{ type: "text", text: JSON.stringify(folder, null, 2) }],
         };
       }
       case GET_VIEW_TOOL.name: {
         const id = getIdValidated(args.id);
-        const view = await ViewService.retrieveView(id);
+        const view = await ViewService.getView(id);
         return {
           content: [{ type: "text", text: JSON.stringify(view, null, 2) }],
         };
