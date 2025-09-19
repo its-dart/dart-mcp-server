@@ -24,7 +24,7 @@
          "args": ["<PATH_TO_WORKSPACE>/dart-mcp-server/dist/index.js"],
          "env": {
            "DART_TOKEN": "dsa_...",
-           "DART_HOST": "http://localhost:5173"
+           "DART_HOST": "http://localhost:5100"
          }
        }
      }
