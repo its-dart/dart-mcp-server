@@ -21,13 +21,13 @@
     "dist"
   ],
   "scripts": {
-    "start:mcp-inspector": "yarn run build && DANGEROUSLY_OMIT_AUTH=true npx @modelcontextprotocol/inspector node dist/index.js",
-    "prepare": "npm run build",
+    "start:mcp-inspector": "bun run build && DANGEROUSLY_OMIT_AUTH=true bunx @modelcontextprotocol/inspector node dist/index.js",
+    "prepare": "bun run build",
     "build": "tsc && shx chmod +x dist/*.js",
     "prettier-check": "prettier --check .",
     "prettier-fix": "prettier --write . --list-different",
-    "req-up-all": "yarn upgrade-interactive --latest --exact --ignore-workspace-root-check",
-    "release": "yarn build && release-it"
+    "req-up-all": "bun update --latest --interactive",
+    "release": "bun run build && release-it"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "~1.11",
@@ -50,5 +50,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "packageManager": "bun@1.3.14"
 }
