@@ -23,24 +23,23 @@
   "scripts": {
     "start:mcp-inspector": "bun run build && DANGEROUSLY_OMIT_AUTH=true bunx @modelcontextprotocol/inspector node dist/index.js",
     "prepare": "bun run build",
-    "build": "tsc && shx chmod +x dist/*.js",
-    "prettier-check": "prettier --check .",
-    "prettier-fix": "prettier --write . --list-different",
+    "build": "tsc && node -e \"require('node:fs').chmodSync('dist/index.js', 0o755)\"",
+    "format-check": "prettier --check .",
+    "format-fix": "prettier --write . --list-different",
     "req-up-all": "bun update --latest --interactive",
     "release": "bun run build && release-it"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "~1.11",
-    "dart-tools": "~0.4",
-    "dotenv": "~16.5"
+    "@modelcontextprotocol/sdk": "~1.30.0",
+    "dart-tools": "~0.4.15",
+    "dotenv": "~17.4.2"
   },
   "devDependencies": {
-    "@modelcontextprotocol/inspector": "0.14.3",
-    "@types/node": "24.0.3",
-    "prettier": "3.5.3",
-    "release-it": "19.0.3",
-    "shx": "0.4.0",
-    "typescript": "5.8.3"
+    "@modelcontextprotocol/inspector": "2.3.0",
+    "@types/node": "26.2.0",
+    "prettier": "3.9.6",
+    "release-it": "21.0.2",
+    "typescript": "7.0.2"
   },
   "keywords": [
     "dart",

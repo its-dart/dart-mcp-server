@@ -41,7 +41,8 @@ const CUSTOM_PROPERTIES_SCHEMA = {
 
 const TASK_RELATIONSHIPS_SCHEMA = {
   type: "object",
-  description: "Task relationships including subtasks, blockers, duplicates, and related tasks",
+  description:
+    "Task relationships including subtasks, blockers, duplicates, and related tasks",
   properties: {
     subtaskIds: {
       type: "array",

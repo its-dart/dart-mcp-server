@@ -1,4 +1,4 @@
-FROM node:22.15-alpine AS builder
+FROM node:26.7.0-alpine AS builder
 
 COPY --from=oven/bun:1.3.14-alpine /usr/local/bin/bun /usr/local/bin/bun
 COPY . /app
@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN --mount=type=cache,target=/root/.bun/install/cache bun ci
 
-FROM node:22.15-alpine AS release
+FROM node:26.7.0-alpine AS release
 
 COPY --from=oven/bun:1.3.14-alpine /usr/local/bin/bun /usr/local/bin/bun
 COPY --from=builder /app/dist /app/dist

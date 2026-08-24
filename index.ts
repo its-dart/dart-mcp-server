@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -50,6 +50,8 @@ import {
   UPDATE_DOC_TOOL,
   UPDATE_TASK_TOOL,
 } from "./tools.js";
+
+loadEnv({ quiet: true });
 
 const ID_REGEX = /^[a-zA-Z0-9]{12}$/;
 
@@ -154,8 +156,6 @@ const CONFIG_RESOURCE_TEMPLATE: ResourceTemplate = {
   name: "Dart config",
   description:
     "Information about the authenticated user associated with the API key, including their role, teams, and settings.",
-  parameters: {},
-  examples: [`${CONFIG_PROTOCOL}:`],
 };
 
 const TASK_PROTOCOL = "dart-task:";
@@ -164,13 +164,6 @@ const TASK_RESOURCE_TEMPLATE: ResourceTemplate = {
   name: "Dart task",
   description:
     "A Dart task with its title, description, status, priority, dates, and more. Use this to fetch detailed information about a specific task.",
-  parameters: {
-    taskId: {
-      type: "string",
-      description: "The unique identifier of the Dart task",
-    },
-  },
-  examples: [`${TASK_PROTOCOL}///9q5qtB8n2Qn6`],
 };
 
 const DOC_PROTOCOL = "dart-doc:";
@@ -179,13 +172,6 @@ const DOC_RESOURCE_TEMPLATE: ResourceTemplate = {
   name: "Dart doc",
   description:
     "A Dart doc with its title, text content, and folder. Use this to fetch detailed information about a specific doc.",
-  parameters: {
-    docId: {
-      type: "string",
-      description: "The unique identifier of the Dart doc",
-    },
-  },
-  examples: [`${DOC_PROTOCOL}///9q5qtB8n2Qn6`],
 };
 
 // Tools
